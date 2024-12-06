@@ -26,6 +26,7 @@ public:
     TRealNumber operator/(TRealNumber);
     TRealNumber operator+(TRealNumber);
     TRealNumber& operator-(); // унарный минус
+    TRealNumber& operator++();
     TRealNumber operator-(TRealNumber); // бинарный минус
     TRealNumber& operator+=(TRealNumber);
     TRealNumber& operator-=(TRealNumber);

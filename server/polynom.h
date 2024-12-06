@@ -149,6 +149,7 @@ void TPolynom<number>::addRoot(number root) {
 template <class number>
 number TPolynom<number>::value (number val) {
     number result = 0;
+
     for (unsigned i = 0; i < this->arrCoef->getSize(); i++) {
         int rootPow = (this->arrCoef->getSize() - i - 1);
         result += this->arrCoef->get(i) * pow(val, rootPow);

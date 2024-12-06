@@ -127,6 +127,11 @@ TRealNumber& TRealNumber::operator-() {
     return *this;
 }
 
+TRealNumber& TRealNumber::operator++() {
+    this->num = this->num + 1.0;
+    return *this;
+}
+
 // Бинарный минус
 TRealNumber TRealNumber::operator-(TRealNumber rn) {
     TRealNumber resultRN; // результирующее вещ. число

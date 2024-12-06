@@ -3,6 +3,7 @@
 #include "complex.h"
 #include "common.h"
 #include "realnumber.h"
+#include "function.h"
 #include <QtDebug>
 
 TApplication::TApplication(int argc, char *argv[])
@@ -299,7 +300,27 @@ QString TApplication::handleReal(QString &strMsg) {
 
     QString param = strMsg.mid(0, strMsg.indexOf(separatorChar)); // Получаем первый параметр - это должен быть полином
     TPolynom<TRealNumber> p(param); // Создание полинома
+    int degree = 5;
+    TArray<TRealNumber> derivatives;
+    derivatives.appendElement(TRealNumber(1));
+    derivatives.appendElement(TRealNumber(0));
+    derivatives.appendElement(TRealNumber(-1));
+    derivatives.appendElement(TRealNumber(0));
+    derivatives.appendElement(TRealNumber(1));
 
+    QString bebra;
+    for (int i = 0; i < degree; ++i) {
+        TRealNumber cefteme = derivatives.get(i);
+        bebra << cefteme;
+        bebra += " ";
+    }
+    qDebug() << bebra;
+
+    TFunction<TRealNumber> func(degree, derivatives);
+    func.setPrintMode(EPrintModeCanonical);
+    bebra = "";
+    bebra << func;
+    qDebug() << bebra;
     p.setPrintMode(EPrintMode::EPrintModeClassic); // Ставим EPrintModeClassic мод для корректной работы
 
     strMsg.remove(0, strMsg.indexOf(separatorChar) + 1); // Убираем полином из сообщения
