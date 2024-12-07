@@ -37,4 +37,6 @@ HEADERS += \
     function.h \
         interface.h \
     polynom.h \
-    realnumber.h
+    realnumber.h \
+    si.h \
+    sin.h

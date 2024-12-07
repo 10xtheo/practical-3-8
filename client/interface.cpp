@@ -7,6 +7,9 @@
 #include <QtDebug>
 #include "function.h"
 #include "realnumber.h"
+#include "sin.h"
+#include "si.h"
+
 
 TInterface::TInterface(QWidget *parent) : QWidget(parent)
 {
@@ -79,30 +82,7 @@ void TInterface::calculateSin()
 
     if (okX && okPrecision && precision >= 1)
     {
-        TArray<TRealNumber> derivatives;
-        for (int i = 0; i < precision; ++i)
-        {
-            switch (i % 4)
-            {
-                case 0:
-                {
-                    derivatives.appendElement(1);
-                    break;
-                }
-                case 2:
-                {
-                    derivatives.appendElement(-1);
-                    break;
-                }
-                default:
-                {
-                    derivatives.appendElement(0);
-                    break;
-                }
-            }
-        }
-        TFunction<TRealNumber> func(precision, derivatives);
-
+        TFsin<TRealNumber> func(precision); // теперь вычисление производных идет в классе
         TRealNumber result = func.getValue(x);
 
         QString resStr;
@@ -131,32 +111,7 @@ void TInterface::calculateSi()
 
     if (okX && okPrecision && precision >= 1)
     {
-        TArray<TRealNumber> derivatives;
-        for (int i = 0; i < precision; ++i)
-        {
-            switch (i % 4)
-            {
-                case 0:
-                {
-                    TRealNumber el = 1.0/(i+1.0);
-                    derivatives.appendElement(el);
-                    break;
-                }
-                case 2:
-                {
-                    TRealNumber el = -1.0/(i+1.0);
-                    derivatives.appendElement(el);
-                    break;
-                }
-                default:
-                {
-                    derivatives.appendElement(0);
-                    break;
-                }
-            }
-        }
-        TFunction<TRealNumber> func(precision, derivatives);
-
+        TFsi<TRealNumber> func(precision); // теперь вычисление производных идет в классе
         TRealNumber result = func.getValue(x);
 
         QString resStr;

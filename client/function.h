@@ -12,6 +12,7 @@ private:
     number value(number val);
 public:
     TFunction(int degree, TArray<number>& derivatives);
+    TFunction(int degree, TArray<number>* derivatives);
     number getValue(number val);
     // ~TFunction();
 };
@@ -37,6 +38,31 @@ TFunction<number>::TFunction(int degree, TArray<number>& derivatives) {
     qDebug() << derivatives.getSize() << " " << this->arrRoot->getSize() << " sizes\n";
     for (int i = 1; i <= degree; ++i) {
         number cefteme = derivatives.get(i-1) / factorial(number(i));
+
+        bebra << cefteme;
+        bebra += " ";
+        this->addCoef(cefteme); // f^(i)(0) / i!
+    }
+
+    bebra << value(number(4));
+    qDebug() << bebra << " resut\n";
+}
+
+template <class number>
+TFunction<number>::TFunction(int degree, TArray<number>* derivatives) {
+    this->arrCoef = new TArray<number>();
+    this->arrRoot = new TArray<number>();
+
+    for (int i = 0; i < degree; i++) {
+        this->arrRoot->appendElement(number(0));
+    }
+    this->canonicCoef = number(1);
+
+    QString bebra;
+
+    qDebug() << derivatives->getSize() << " " << this->arrRoot->getSize() << " sizes\n";
+    for (int i = 1; i <= degree; ++i) {
+        number cefteme = derivatives->get(i-1) / factorial(number(i));
 
         bebra << cefteme;
         bebra += " ";
