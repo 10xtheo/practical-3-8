@@ -113,7 +113,10 @@ void TInterface::calculateSin()
         loggingMessage << func;
         qDebug() << loggingMessage;
 
-        outputField->setText(resStr);
+
+        QString strX;
+        strX << x;
+        outputField->setText("sin(" + strX + ") = "+ resStr);
         return;
     }
 
@@ -164,7 +167,9 @@ void TInterface::calculateSi()
         loggingMessage << func;
         qDebug() << loggingMessage;
 
-        outputField->setText(resStr);
+        QString strX;
+        strX << x;
+        outputField->setText("Si(" + strX + ") = "+ resStr);
         return;
     }
 
