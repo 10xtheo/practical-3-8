@@ -5,6 +5,8 @@
 #include <QRadioButton>
 #include <QApplication>
 #include <QtDebug>
+#include "function.h"
+#include "realnumber.h"
 
 TInterface::TInterface(QWidget *parent) : QWidget(parent)
 {
@@ -71,12 +73,49 @@ TInterface::~TInterface()
 
 void TInterface::calculateSin()
 {
-    bool ok;
-    double x = inputField->text().toDouble(&ok);
+    bool okX, okPrecision;
+    const TRealNumber x = inputField->text().toDouble(&okX);
+    const int precision = precisionField->text().toInt(&okPrecision);
 
-    if (ok) {
-        double result = 1; //sin(x); // Вычисление sin(x)
-        outputField->setText(QString::number(result));
+    if (okX && okPrecision && precision >= 1)
+    {
+//        TRealNumber result; //sin(x); // Вычисление sin(x)
+
+        TArray<TRealNumber> derivatives;
+        for (int i = 0; i < precision; ++i)
+        {
+            switch (i % 4)
+            {
+                case 0:
+                {
+                    derivatives.appendElement(1);
+                    break;
+                }
+                case 2:
+                {
+                    derivatives.appendElement(-1);
+                    break;
+                }
+                default:
+                {
+                    derivatives.appendElement(0);
+                    break;
+                }
+            }
+        }
+        TFunction<TRealNumber> func(precision, derivatives);
+
+        TRealNumber result = func.getValue(x);
+
+        QString resStr;
+        resStr << result;
+
+        func.setPrintMode(EPrintModeCanonical);
+        QString loggingMessage = "";
+        loggingMessage << func;
+        qDebug() << loggingMessage;
+
+        outputField->setText(resStr);
         return;
     }
 
@@ -88,8 +127,11 @@ void TInterface::calculateSi()
    bool ok;
    double x = inputField->text().toDouble(&ok);
 
-   if (ok) {
+   if (ok)
+   {
        double result = 1/* Ваш код для вычисления Si(x) */;
+
+
        outputField->setText(QString::number(result));
        return;
    }

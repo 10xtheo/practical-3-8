@@ -3,6 +3,7 @@
 
 #include "polynom.h"
 #include "array.h"
+#include "QDebug"
 
 template <class number>
 class TFunction : public TPolynom<number> {
@@ -11,8 +12,15 @@ private:
     number value(number val);
 public:
     TFunction(int degree, TArray<number>& derivatives);
+    number getValue(number val);
     // ~TFunction();
 };
+
+template <class number>
+number TFunction<number>::getValue(number val)
+{
+    return value(val);
+}
 
 template <class number>
 TFunction<number>::TFunction(int degree, TArray<number>& derivatives) {
