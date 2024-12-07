@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-    TApplication a(argc, argv);
-    return a.exec();
+    Application app(argc, argv); // Создаем объект приложения
+    return app.exec(); // Запускаем основной цикл событий
 }

@@ -1,26 +1,20 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QObject>
 #include <QApplication>
+#include <QWidget>
+#include "interface.h" // Подключаем интерфейс
 
-#include "interface.h"
-#include "communicator.h"
-
-class TApplication : public QApplication
+class Application : public QApplication
 {
     Q_OBJECT
 
-    TCommunicator *comm;
-    TInterface    *interface;
-
 public:
-    TApplication(int, char**);
+    Application(int &argc, char **argv);
+    ~Application();
 
-public slots:
-    void fromCommunicator(QByteArray);
-    void toCommunicator(QString);
-
+private:
+    TInterface *mainInterface; // Указатель на основной интерфейс
 };
 
 #endif // APPLICATION_H
