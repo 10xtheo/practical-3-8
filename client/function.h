@@ -37,6 +37,7 @@ TFunction<number>::TFunction(int degree, TArray<number>& derivatives) {
     qDebug() << derivatives.getSize() << " " << this->arrRoot->getSize() << " sizes\n";
     for (int i = 1; i <= degree; ++i) {
         number cefteme = derivatives.get(i-1) / factorial(number(i));
+
         bebra << cefteme;
         bebra += " ";
         this->addCoef(cefteme); // f^(i)(0) / i!
