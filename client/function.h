@@ -117,4 +117,5 @@ number TFunction<number>::value (number val) {
     return result;
 }
 
+
 #endif // FUNCTION_H

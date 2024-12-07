@@ -42,6 +42,24 @@ public:
         d->flushMemory();
         delete d;
     }
+    QString mcLoren()
+    {
+        QString result = "P(x) = x";
+        for (unsigned i = 1; i < this->arrCoef->getSize(); ++i)
+        {
+            if (this->arrCoef->get(i) != 0)
+            {
+                result += " + x";
+                result += " ^";
+                result += QString::number(i+1);
+                result += "/";
+                result += QString::number(i+1);
+                result += "!";
+            }
+        }
+
+        return result;
+    }
 };
 
 

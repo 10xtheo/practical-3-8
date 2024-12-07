@@ -25,14 +25,18 @@ public slots:
 
 private:
     QLineEdit *outputField; // Поле вывода результата
+    QHBoxLayout *xLayout; // Макет ввода x
+    QLabel *xLabel; // Метка x
     QLineEdit *inputField; // Поле ввода x
+    QHBoxLayout *precisionLayout; // Макет ввода точности
+    QLabel *precisionLabel; // Метка точности
     QLineEdit *precisionField; // Поле ввода точности
     QPushButton *clearButton; // Кнопка очистки
     QPushButton *calculateSinButton; // Кнопка вычисления sin(x)
     QPushButton *calculateSiButton; // Кнопка вычисления Si(x)
     QPushButton *exitButton; // Кнопка выхода
     QVBoxLayout *mainLayout; // Основной макет
-
+    QLineEdit *maclaurinSeriesField; // ряд для вывода ряда маклорена
     void setupUI(); // Настройка пользовательского интерфейса
 };
 

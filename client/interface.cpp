@@ -23,15 +23,25 @@ void TInterface::setupUI()
 
     mainLayout = new QVBoxLayout(this);
 
-    // Поле ввода x
+    // Горизонтальный макет для поля ввода x
+    QHBoxLayout *xLayout = new QHBoxLayout();
+    QLabel *xLabel = new QLabel("x =", this);
     inputField = new QLineEdit(this);
     inputField->setPlaceholderText("Введите x");
-    mainLayout->addWidget(inputField);
 
-    // Поле ввода точности
+    xLayout->addWidget(xLabel);
+    xLayout->addWidget(inputField);
+    mainLayout->addLayout(xLayout);
+
+    // Горизонтальный макет для поля ввода точности
+    QHBoxLayout *precisionLayout = new QHBoxLayout();
+    QLabel *precisionLabel = new QLabel("Точность:", this);
     precisionField = new QLineEdit(this);
     precisionField->setPlaceholderText("Введите точность");
-    mainLayout->addWidget(precisionField);
+
+    precisionLayout->addWidget(precisionLabel);
+    precisionLayout->addWidget(precisionField);
+    mainLayout->addLayout(precisionLayout);
 
     // Кнопка "Вычислить sin(x)"
     calculateSinButton = new QPushButton("Вычислить sin(x)", this);
@@ -49,6 +59,12 @@ void TInterface::setupUI()
     outputField->setPlaceholderText("Результат будет здесь...");
     mainLayout->addWidget(outputField);
 
+    // Поле для ряда Маклорена
+    maclaurinSeriesField = new QLineEdit(this); // Создаем новое поле
+    maclaurinSeriesField->setReadOnly(true); // Устанавливаем readonly
+    maclaurinSeriesField->setPlaceholderText("Ряд Маклорена"); // Устанавливаем плейсхолдер
+    mainLayout->addWidget(maclaurinSeriesField); // Добавляем в layout
+
     // Кнопка "Очистить"
     clearButton = new QPushButton("Очистить", this);
     connect(clearButton, &QPushButton::clicked, this, &TInterface::clearOutput);
@@ -65,13 +81,18 @@ void TInterface::setupUI()
 TInterface::~TInterface()
 {
     delete outputField; // Поле вывода результата
+    delete xLabel; // Метка x
     delete inputField; // Поле ввода x
+    delete xLayout; // Макет ввода x
+    delete precisionLabel; // Метка точности
     delete precisionField; // Поле ввода точности
+    delete precisionLayout; // Макет ввода точности
     delete clearButton; // Кнопка очистки
     delete calculateSinButton; // Кнопка вычисления sin(x)
     delete calculateSiButton; // Кнопка вычисления Si(x)
     delete exitButton; // Кнопка выхода
     delete mainLayout; // Основной макет
+
 }
 
 void TInterface::calculateSin()
@@ -97,6 +118,7 @@ void TInterface::calculateSin()
         QString strX;
         strX << x;
         outputField->setText("sin(" + strX + ") = "+ resStr);
+        maclaurinSeriesField->setText(func.mcLoren());
         return;
     }
 
@@ -125,6 +147,7 @@ void TInterface::calculateSi()
         QString strX;
         strX << x;
         outputField->setText("Si(" + strX + ") = "+ resStr);
+        maclaurinSeriesField->setText(func.mcLoren());
         return;
     }
 
@@ -134,6 +157,7 @@ void TInterface::calculateSi()
 void TInterface::clearOutput()
 {
     outputField->clear(); // Очистка поля вывода
+    maclaurinSeriesField->clear();
 }
 
 void TInterface::exitApplication()
