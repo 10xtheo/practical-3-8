@@ -49,7 +49,14 @@ public:
         {
             if (this->arrCoef->get(i) != 0)
             {
-                result += " + x";
+                // Получаем коэффициент и конвертируем его в QString
+                QString coefStr;
+                coefStr << this->arrCoef->get(i);
+                QString sign = (coefStr[0] == '-' ? "-" : "+"); // Определяем знак
+
+                result += " ";
+                result += sign; // Добавляем знак перед коэффициентом
+                result += " x";
                 result += " ^";
                 result += QString::number(i+1);
                 result += "/";

@@ -19,7 +19,8 @@ TInterface::TInterface(QWidget *parent) : QWidget(parent)
 void TInterface::setupUI()
 {
     setWindowTitle("Вычисление функций");
-    setMaximumSize(400, 200);
+    setMaximumSize(600, 300);
+    setMinimumSize(300, 200);
 
     mainLayout = new QVBoxLayout(this);
 
