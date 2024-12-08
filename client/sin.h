@@ -42,16 +42,17 @@ public:
         d->flushMemory();
         delete d;
     }
-    QString mcLoren()
+
+    friend QString& operator<<(QString& result, TFsin<number>& tfsin)
     {
-        QString result = "P(x) = x";
-        for (unsigned i = 1; i < this->arrCoef->getSize(); ++i)
+        result += "P(x) = x";
+        for (unsigned i = 1; i < tfsin.arrCoef->getSize(); ++i)
         {
-            if (this->arrCoef->get(i) != 0)
+            if (tfsin.arrCoef->get(i) != 0)
             {
                 // Получаем коэффициент и конвертируем его в QString
                 QString coefStr;
-                coefStr << this->arrCoef->get(i);
+                coefStr << tfsin.arrCoef->get(i);
                 QString sign = (coefStr[0] == '-' ? "-" : "+"); // Определяем знак
 
                 result += " ";

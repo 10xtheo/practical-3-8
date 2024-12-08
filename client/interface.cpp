@@ -105,21 +105,20 @@ void TInterface::calculateSin()
     if (okX && okPrecision && precision >= 1)
     {
         TFsin<TRealNumber> func(precision); // теперь вычисление производных идет в классе
-        TRealNumber result = func.getValue(x);
+        TRealNumber result = func.value(x);
 
         QString resStr;
         resStr << result;
 
         func.setPrintMode(EPrintModeCanonical);
-        QString loggingMessage = "";
-        loggingMessage << func;
-        qDebug() << loggingMessage;
-
 
         QString strX;
         strX << x;
         outputField->setText("sin(" + strX + ") = "+ resStr);
-        maclaurinSeriesField->setText(func.mcLoren());
+
+        QString mclaurianOutput;
+        mclaurianOutput << func;
+        maclaurinSeriesField->setText(mclaurianOutput);
         return;
     }
 
@@ -135,20 +134,20 @@ void TInterface::calculateSi()
     if (okX && okPrecision && precision >= 1)
     {
         TFsi<TRealNumber> func(precision); // теперь вычисление производных идет в классе
-        TRealNumber result = func.getValue(x);
+        TRealNumber result = func.value(x);
 
         QString resStr;
         resStr << result;
 
         func.setPrintMode(EPrintModeCanonical);
-        QString loggingMessage = "";
-        loggingMessage << func;
-        qDebug() << loggingMessage;
 
         QString strX;
         strX << x;
         outputField->setText("Si(" + strX + ") = "+ resStr);
-        maclaurinSeriesField->setText(func.mcLoren());
+
+        QString mclaurianOutput;
+        mclaurianOutput << func;
+        maclaurinSeriesField->setText(mclaurianOutput);
         return;
     }
 
