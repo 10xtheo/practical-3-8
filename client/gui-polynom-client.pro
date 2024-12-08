@@ -27,8 +27,7 @@ SOURCES += \
         complex.cpp \
         main.cpp \
         application.cpp \
-        interface.cpp \
-        realnumber.cpp
+        interface.cpp
 
 HEADERS += \
         application.h \
@@ -37,6 +36,5 @@ HEADERS += \
     function.h \
         interface.h \
     polynom.h \
-    realnumber.h \
     si.h \
     sin.h
