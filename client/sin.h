@@ -53,6 +53,8 @@ public:
                 // Получаем коэффициент и конвертируем его в QString
                 QString coefStr;
                 coefStr << tfsin.arrCoef->get(i);
+                coefStr.replace("(", "");
+                coefStr.replace(")", "");
                 QString sign = (coefStr[0] == '-' ? "-" : "+"); // Определяем знак
 
                 result += " ";

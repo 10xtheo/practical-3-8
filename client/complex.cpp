@@ -153,6 +153,11 @@ TComplex& TComplex::operator-() {
     return *this;
 }
 
+TComplex& TComplex::operator++() {
+    this->re = this->re + 1.0;
+    return *this;
+}
+
 // Бинарный минус
 TComplex TComplex::operator-(TComplex c) {
     TComplex rc; // результирующее комплексное число

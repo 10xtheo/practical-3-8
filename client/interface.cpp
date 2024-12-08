@@ -6,7 +6,7 @@
 #include <QApplication>
 #include <QtDebug>
 #include "function.h"
-#include "realnumber.h"
+#include "complex.h"
 #include "sin.h"
 #include "si.h"
 
@@ -98,14 +98,17 @@ TInterface::~TInterface()
 
 void TInterface::calculateSin()
 {
-    bool okX, okPrecision;
-    const TRealNumber x = inputField->text().toDouble(&okX);
+    bool okPrecision;
+    TComplex x;
+    QString cnum = inputField->text();
+    cnum >> x;
+
     const int precision = precisionField->text().toInt(&okPrecision);
 
-    if (okX && okPrecision && precision >= 1)
+    if (okPrecision && precision >= 1)
     {
-        TFsin<TRealNumber> func(precision); // теперь вычисление производных идет в классе
-        TRealNumber result = func.value(x);
+        TFsin<TComplex> func(precision); // теперь вычисление производных идет в классе
+        TComplex result = func.value(x);
 
         QString resStr;
         resStr << result;
@@ -127,14 +130,16 @@ void TInterface::calculateSin()
 
 void TInterface::calculateSi()
 {
-    bool okX, okPrecision;
-    const TRealNumber x = inputField->text().toDouble(&okX);
+    bool okPrecision;
+    TComplex x;
+    QString cnum = inputField->text();
+    cnum >> x;
     const int precision = precisionField->text().toInt(&okPrecision);
 
-    if (okX && okPrecision && precision >= 1)
+    if (okPrecision && precision >= 1)
     {
-        TFsi<TRealNumber> func(precision); // теперь вычисление производных идет в классе
-        TRealNumber result = func.value(x);
+        TFsi<TComplex> func(precision); // теперь вычисление производных идет в классе
+        TComplex result = func.value(x);
 
         QString resStr;
         resStr << result;

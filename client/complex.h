@@ -25,6 +25,7 @@ public:
     TComplex operator/(TComplex);
     TComplex operator+(TComplex);
     TComplex& operator-(); // унарный минус
+    TComplex& operator++();
     TComplex operator-(TComplex); // бинарный минус
     TComplex& operator+=(TComplex);
     TComplex& operator-=(TComplex);
