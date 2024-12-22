@@ -44,6 +44,15 @@ void TInterface::setupUI()
     precisionLayout->addWidget(precisionField);
     mainLayout->addLayout(precisionLayout);
 
+    // Create radio buttons for number type selection
+    QHBoxLayout *radioLayout = new QHBoxLayout();
+    complexRadioButton = new QRadioButton("Компл", this);
+    realRadioButton = new QRadioButton("Вещ", this);
+    realRadioButton->setChecked(true); // Set real as default
+    radioLayout->addWidget(complexRadioButton);
+    radioLayout->addWidget(realRadioButton);
+    mainLayout->addLayout(radioLayout);
+
     // Кнопка "Вычислить sin(x)"
     calculateSinButton = new QPushButton("Вычислить sin(x)", this);
     connect(calculateSinButton, &QPushButton::clicked, this, &TInterface::calculateSin);
@@ -100,24 +109,59 @@ void TInterface::calculateSin()
 {
     bool okPrecision;
     TComplex x;
-    QString cnum = inputField->text();
-    cnum >> x;
+    // Check which radio button is selected
+    if (complexRadioButton->isChecked())
+    {
+        QString cnum = inputField->text();
+        cnum >> x; // Assuming this handles complex input
+    }
+    else
+    {
+        double realX = inputField->text().toDouble(&okPrecision);
+        if (okPrecision)
+        {
+            x = TComplex(realX, 0); // Convert to complex with imaginary part 0
+        }
+        else
+        {
+            outputField->setText("Ошибка ввода!");
+            maclaurinSeriesField->setText("Ошибка ввода!");
+            return;
+        }
+    }
 
     const int precision = precisionField->text().toInt(&okPrecision);
 
     if (okPrecision && precision >= 1)
     {
-        TFsin<TComplex> func(precision); // теперь вычисление производных идет в классе
+        TFsin<TComplex> func(precision);
         TComplex result = func.value(x);
-
         QString resStr;
-        resStr << result;
+
+        if (complexRadioButton->isChecked())
+        {
+            // If complex mode is selected, show the full result
+            resStr << result;
+        }
+        else
+        {
+            // If real mode is selected, show only the real part
+            resStr.setNum(result.modulus()); // Assuming modulus returns the real part for real numbers
+        }
 
         func.setPrintMode(EPrintModeCanonical);
 
         QString strX;
-        strX << x;
-        outputField->setText("sin(" + strX + ") = "+ resStr);
+        if (complexRadioButton->isChecked())
+        {
+            strX << x; // Show full complex number
+        }
+        else
+        {
+            strX = QString::number(x.modulus()); // Show only the real part
+        }
+
+        outputField->setText("sin(" + strX + ") = " + resStr);
 
         QString mclaurianOutput;
         mclaurianOutput << func;
@@ -126,37 +170,76 @@ void TInterface::calculateSin()
     }
 
     outputField->setText("Ошибка ввода!");
+    maclaurinSeriesField->setText("Ошибка ввода!");
+
 }
 
 void TInterface::calculateSi()
 {
     bool okPrecision;
     TComplex x;
-    QString cnum = inputField->text();
-    cnum >> x;
-    const int precision = precisionField->text().toInt(&okPrecision);
 
+    // Check which radio button is selected
+    if (complexRadioButton->isChecked())
+    {
+        QString cnum = inputField->text();
+        cnum >> x; // Assuming this handles complex input
+
+    }
+    else
+    {
+        double realX = inputField->text().toDouble(&okPrecision);
+        if (okPrecision)
+        {
+            x = TComplex(realX, 0); // Convert to complex with imaginary part 0
+        }
+        else
+        {
+            outputField->setText("Ошибка ввода!");
+            maclaurinSeriesField->setText("Ошибка ввода!");
+            return;
+        }
+    }
+
+    const int precision = precisionField->text().toInt(&okPrecision);
     if (okPrecision && precision >= 1)
     {
-        TFsi<TComplex> func(precision); // теперь вычисление производных идет в классе
+        TFsi<TComplex> func(precision);
         TComplex result = func.value(x);
-
         QString resStr;
-        resStr << result;
+
+        if (complexRadioButton->isChecked())
+        {
+            // If complex mode is selected, show the full result
+            resStr << result;
+        }
+        else
+        {
+            // If real mode is selected, show only the real part
+            resStr.setNum(result.modulus()); // Assuming modulus returns the real part for real numbers
+        }
 
         func.setPrintMode(EPrintModeCanonical);
 
         QString strX;
-        strX << x;
-        outputField->setText("Si(" + strX + ") = "+ resStr);
+        if (complexRadioButton->isChecked())
+        {
+            strX << x; // Show full complex number
+        }
+        else
+        {
+            strX = QString::number(x.modulus()); // Show only the real part
+        }
+
+        outputField->setText("Si(" + strX + ") = " + resStr);
 
         QString mclaurianOutput;
         mclaurianOutput << func;
         maclaurinSeriesField->setText(mclaurianOutput);
         return;
     }
-
     outputField->setText("Ошибка ввода!");
+    maclaurinSeriesField->setText("Ошибка ввода!");
 }
 
 void TInterface::clearOutput()

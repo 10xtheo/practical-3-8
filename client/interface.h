@@ -38,6 +38,10 @@ private:
     QVBoxLayout *mainLayout; // Основной макет
     QLineEdit *maclaurinSeriesField; // ряд для вывода ряда маклорена
     void setupUI(); // Настройка пользовательского интерфейса
+
+    QRadioButton *complexRadioButton; // Radio button for complex numbers
+    QRadioButton *realRadioButton;     // Radio button for real numbers
+
 };
 
 #endif // INTERFACE_H
