@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         complex.cpp \
+        graphWindow.cpp \
         main.cpp \
         application.cpp \
         interface.cpp
@@ -34,6 +35,7 @@ HEADERS += \
     array.h \
     complex.h \
     function.h \
+    graphWindow.h \
         interface.h \
     polynom.h \
     si.h \

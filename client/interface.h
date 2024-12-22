@@ -9,6 +9,8 @@
 #include <QHBoxLayout>
 #include <QRadioButton>
 
+#include "graphWindow.h"
+
 class TInterface : public QWidget
 {
     Q_OBJECT

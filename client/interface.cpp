@@ -159,6 +159,12 @@ void TInterface::calculateSin()
         else
         {
             strX = QString::number(x.modulus()); // Show only the real part
+
+            // Open the graph window
+            GraphWindow *graphWindow = new GraphWindow(this);
+            graphWindow->setFunctionType("sin");
+            graphWindow->setInterval(-10, 10); // Set default interval, you can modify this
+            graphWindow->show();
         }
 
         outputField->setText("sin(" + strX + ") = " + resStr);
@@ -229,6 +235,12 @@ void TInterface::calculateSi()
         else
         {
             strX = QString::number(x.modulus()); // Show only the real part
+
+            // Open the graph window
+            GraphWindow *graphWindow = new GraphWindow(this);
+            graphWindow->setFunctionType("si");
+            graphWindow->setInterval(-10, 10); // Set default interval, you can modify this
+            graphWindow->show();
         }
 
         outputField->setText("Si(" + strX + ") = " + resStr);
