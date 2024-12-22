@@ -87,7 +87,7 @@ void GraphWindow::paintEvent(QPaintEvent *event)
 
             double mappedX = (x - xMin) / (xMax - xMin) * (width() - 100) + 50;
             TComplex rawY = TComplex(height()) / TComplex(2) - (localSin.value(localX) * TComplex(50));
-            double mappedY = rawY.getReal();
+            double mappedY = rawY.modulus();
             points[i] = QPointF(mappedX, mappedY);
         }
 
@@ -105,7 +105,7 @@ void GraphWindow::paintEvent(QPaintEvent *event)
 
             double mappedX = (x - xMin) / (xMax - xMin) * (width() - 100) + 50;
             TComplex rawY = TComplex(height()) / TComplex(2) - (localSi.value(localX) * TComplex(50));
-            double mappedY = rawY.getReal();
+            double mappedY = rawY.modulus();
             points[i] = QPointF(mappedX, mappedY);
         }
     }

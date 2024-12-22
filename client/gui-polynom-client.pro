@@ -28,7 +28,8 @@ SOURCES += \
         graphWindow.cpp \
         main.cpp \
         application.cpp \
-        interface.cpp
+        interface.cpp \
+        realnumber.cpp
 
 HEADERS += \
         application.h \
@@ -38,5 +39,6 @@ HEADERS += \
     graphWindow.h \
         interface.h \
     polynom.h \
+    realnumber.h \
     si.h \
     sin.h

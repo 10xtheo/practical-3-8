@@ -35,7 +35,6 @@ public:
     friend istream& operator>>(istream&, TComplex&);
     friend TComplex pow(TComplex, int);
     friend TComplex sqrt(TComplex num);
-    double getReal();
 };
 
 #endif // COMPLEX_H
