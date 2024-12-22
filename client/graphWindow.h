@@ -11,7 +11,6 @@
 #include <QPainter>
 #include <QLabel>
 
-
 class GraphWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,20 +19,23 @@ public:
     GraphWindow(QWidget *parent = nullptr);
     void setFunctionType(const QString &type);
     void setInterval(double xMin, double xMax);
-
+    void setPrecision(int p);
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private slots:
     void onPlotButtonClicked();
+    void onResetPlotButtonClicked();
 
 private:
-    QString functionType; // Type of function to plot (e.g., "sin" or "si")
-    double xMin, xMax;    // Interval for x-axis
+    QString functionType;
+    double xMin, xMax; // Интервал для x
+    int precision; // Точность
     QLineEdit *xMinInput;
     QLineEdit *xMaxInput;
     QPushButton *plotButton;
-    QLabel *functionLabel; // Label to display the function type
+    QPushButton *resetPlotButton;
+    QLabel *functionLabel;
 };
 
 

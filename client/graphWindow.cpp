@@ -2,48 +2,60 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <cmath>
+#include "si.h"
+#include "sin.h"
+#include "complex.h"
+
 
 GraphWindow::GraphWindow(QWidget *parent) : QMainWindow(parent), xMin(0), xMax(1)
 {
-    // Create central widget and layout
+    // layout
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(centralWidget);
 
-    // Create a label for the function type
+    // label
     functionLabel = new QLabel("Function: ", this);
     layout->addWidget(functionLabel);
 
-    // Create input fields for interval
+    // interval
     xMinInput = new QLineEdit(this);
     xMaxInput = new QLineEdit(this);
     xMinInput->setPlaceholderText("Enter minimum x value");
     xMaxInput->setPlaceholderText("Enter maximum x value");
 
-    // Create a button to plot the function
+    // button to plot
     plotButton = new QPushButton("Plot Function", this);
     connect(plotButton, &QPushButton::clicked, this, &GraphWindow::onPlotButtonClicked);
 
-    // Add widgets to the layout
+    // button to reset
+    resetPlotButton = new QPushButton("Reset plot", this);
+    connect(resetPlotButton, &QPushButton::clicked, this, &GraphWindow::onResetPlotButtonClicked);
+
     layout->addWidget(xMinInput);
     layout->addWidget(xMaxInput);
     layout->addWidget(plotButton);
+    layout->addWidget(resetPlotButton);
 
     setCentralWidget(centralWidget);
     setWindowTitle("Graph Plotter");
-    resize(800, 600); // Set a reasonable default size
+    resize(800, 600);
 }
 
 void GraphWindow::setFunctionType(const QString &type)
 {
-    functionType = type; // Store the function type
-    functionLabel->setText("Function: " + functionType); // Update the label
+    functionType = type;
+    functionLabel->setText("Function: " + functionType + "\nPrecision: " + QString::number(precision));
 }
 
 void GraphWindow::setInterval(double min, double max)
 {
     xMin = min;
     xMax = max;
-    update(); // Trigger a repaint
+    update();
+}
+
+void GraphWindow::setPrecision(int p) {
+    this->precision = p;
 }
 
 void GraphWindow::paintEvent(QPaintEvent *event)
@@ -52,38 +64,52 @@ void GraphWindow::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // Draw axes
+    // axes
     painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(50, height() / 2, width() - 50, height() / 2); // X-axis
     painter.drawLine(width() / 2, 50, width() / 2, height() - 50); // Y-axis
 
-    // Draw the function
+    // function
     painter.setPen(QPen(Qt::blue, 2));
     const int numPoints = 100;
     QVector<QPointF> points(numPoints);
 
-    for (int i = 0; i < numPoints; ++i)
+    if (functionType == "sin")
     {
-        double x = xMin + (xMax - xMin) * i / (numPoints - 1);
-        double y = 0;
+        TFsin<TComplex> localSin(precision);
 
-        if (functionType == "sin")
+        for (int i = 0; i < numPoints; ++i)
         {
-            y = sin(x);
-        }
-        else if (functionType == "si")
-        {
-            // Implement the Si function here
-            // y = /* Your Si function implementation */;
+            double x = xMin + (xMax - xMin) * i / (numPoints - 1);
+            TComplex localX(x);
+            double y = 0;
+
+
+            double mappedX = (x - xMin) / (xMax - xMin) * (width() - 100) + 50;
+            TComplex rawY = TComplex(height()) / TComplex(2) - (localSin.value(localX) * TComplex(50));
+            double mappedY = rawY.getReal();
+            points[i] = QPointF(mappedX, mappedY);
         }
 
-        // Map the function value to the widget's coordinate system
-        double mappedX = (x - xMin) / (xMax - xMin) * (width() - 100) + 50;
-        double mappedY = height() / 2 - (y * 50); // Scale the y value
-        points[i] = QPointF(mappedX, mappedY);
+    }
+    else if (functionType == "si")
+    {
+        TFsi<TComplex> localSi(precision);
+
+        for (int i = 0; i < numPoints; ++i)
+        {
+            double x = xMin + (xMax - xMin) * i / (numPoints - 1);
+            TComplex localX(x);
+            double y = 0;
+
+
+            double mappedX = (x - xMin) / (xMax - xMin) * (width() - 100) + 50;
+            TComplex rawY = TComplex(height()) / TComplex(2) - (localSi.value(localX) * TComplex(50));
+            double mappedY = rawY.getReal();
+            points[i] = QPointF(mappedX, mappedY);
+        }
     }
 
-    // Draw the function line
     painter.drawPolyline(points.data(), points.size());
 }
 
@@ -99,8 +125,17 @@ void GraphWindow::onPlotButtonClicked()
         return;
     }
 
-    // Set the interval for the graph
     setInterval(minX, maxX);
-    setFunctionType("sin"); // Example: setting the function type to "sin"
-    update(); // Trigger a repaint to show the updated graph
+    // setFunctionType("sin");
+    update();
+}
+
+void GraphWindow::onResetPlotButtonClicked()
+{
+    double minX = -10;
+    double maxX = 10;
+
+    setInterval(minX, maxX);
+    // setFunctionType("sin");
+    update();
 }

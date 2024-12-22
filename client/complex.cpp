@@ -17,6 +17,10 @@ TComplex::TComplex(const double& r, const double& i) {
     this->im = i;
 }
 
+double TComplex::getReal() {
+    return this->re;
+}
+
 bool TComplex::operator==(TComplex c) {
     return (this->re == c.re) && (this->im == c.im);
 }

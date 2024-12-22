@@ -38,7 +38,20 @@ void TInterface::setupUI()
     QHBoxLayout *precisionLayout = new QHBoxLayout();
     QLabel *precisionLabel = new QLabel("Точность:", this);
     precisionField = new QLineEdit(this);
-    precisionField->setPlaceholderText("Введите точность");
+    precisionField->setPlaceholderText("Введите точность (от 1 до 100)");
+
+    // Небольшой валидатор для поля точности
+    connect(precisionField, &QLineEdit::textChanged, this, [this](const QString& text) {
+        if (text.isEmpty()) return;
+
+        bool ok;
+        int value = text.toInt(&ok);
+
+        if (!ok || value < 0 || value > 100) {
+            precisionField->clear();
+            return;
+        }
+    });
 
     precisionLayout->addWidget(precisionLabel);
     precisionLayout->addWidget(precisionField);
@@ -109,18 +122,18 @@ void TInterface::calculateSin()
 {
     bool okPrecision;
     TComplex x;
-    // Check which radio button is selected
+
     if (complexRadioButton->isChecked())
     {
         QString cnum = inputField->text();
-        cnum >> x; // Assuming this handles complex input
+        cnum >> x;
     }
     else
     {
         double realX = inputField->text().toDouble(&okPrecision);
         if (okPrecision)
         {
-            x = TComplex(realX, 0); // Convert to complex with imaginary part 0
+            x = TComplex(realX, 0);
         }
         else
         {
@@ -138,40 +151,26 @@ void TInterface::calculateSin()
         TComplex result = func.value(x);
         QString resStr;
 
-        if (complexRadioButton->isChecked())
-        {
-            // If complex mode is selected, show the full result
-            resStr << result;
-        }
-        else
-        {
-            // If real mode is selected, show only the real part
-            resStr.setNum(result.modulus()); // Assuming modulus returns the real part for real numbers
-        }
+        if (complexRadioButton->isChecked()) resStr << result;
+        else resStr.setNum(result.modulus());
 
         func.setPrintMode(EPrintModeCanonical);
 
         QString strX;
-        if (complexRadioButton->isChecked())
-        {
-            strX << x; // Show full complex number
-        }
-        else
-        {
-            strX = QString::number(x.modulus()); // Show only the real part
-
-            // Open the graph window
-            GraphWindow *graphWindow = new GraphWindow(this);
-            graphWindow->setFunctionType("sin");
-            graphWindow->setInterval(-10, 10); // Set default interval, you can modify this
-            graphWindow->show();
-        }
+        if (complexRadioButton->isChecked()) strX << x;
+        else strX = QString::number(x.modulus());
 
         outputField->setText("sin(" + strX + ") = " + resStr);
 
         QString mclaurianOutput;
         mclaurianOutput << func;
         maclaurinSeriesField->setText(mclaurianOutput);
+
+        GraphWindow *graphWindow = new GraphWindow(this);
+        graphWindow->setPrecision(precision);
+        graphWindow->setFunctionType("sin");
+        graphWindow->setInterval(-10, 10);
+        graphWindow->show();
         return;
     }
 
@@ -185,11 +184,10 @@ void TInterface::calculateSi()
     bool okPrecision;
     TComplex x;
 
-    // Check which radio button is selected
     if (complexRadioButton->isChecked())
     {
         QString cnum = inputField->text();
-        cnum >> x; // Assuming this handles complex input
+        cnum >> x;
 
     }
     else
@@ -197,7 +195,7 @@ void TInterface::calculateSi()
         double realX = inputField->text().toDouble(&okPrecision);
         if (okPrecision)
         {
-            x = TComplex(realX, 0); // Convert to complex with imaginary part 0
+            x = TComplex(realX, 0);
         }
         else
         {
@@ -214,40 +212,27 @@ void TInterface::calculateSi()
         TComplex result = func.value(x);
         QString resStr;
 
-        if (complexRadioButton->isChecked())
-        {
-            // If complex mode is selected, show the full result
-            resStr << result;
-        }
-        else
-        {
-            // If real mode is selected, show only the real part
-            resStr.setNum(result.modulus()); // Assuming modulus returns the real part for real numbers
-        }
+        if (complexRadioButton->isChecked()) resStr << result;
+        else resStr.setNum(result.modulus());
 
         func.setPrintMode(EPrintModeCanonical);
 
         QString strX;
-        if (complexRadioButton->isChecked())
-        {
-            strX << x; // Show full complex number
-        }
-        else
-        {
-            strX = QString::number(x.modulus()); // Show only the real part
-
-            // Open the graph window
-            GraphWindow *graphWindow = new GraphWindow(this);
-            graphWindow->setFunctionType("si");
-            graphWindow->setInterval(-10, 10); // Set default interval, you can modify this
-            graphWindow->show();
-        }
+        if (complexRadioButton->isChecked()) strX << x;
+        else strX = QString::number(x.modulus());
 
         outputField->setText("Si(" + strX + ") = " + resStr);
 
         QString mclaurianOutput;
         mclaurianOutput << func;
         maclaurinSeriesField->setText(mclaurianOutput);
+
+
+        GraphWindow *graphWindow = new GraphWindow(this);
+        graphWindow->setPrecision(precision);
+        graphWindow->setFunctionType("si");
+        graphWindow->setInterval(-10, 10);
+        graphWindow->show();
         return;
     }
     outputField->setText("Ошибка ввода!");
